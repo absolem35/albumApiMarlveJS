@@ -33,13 +33,16 @@ function showSuperHero(id) {
   fetch(url)
     .then(response => response.json())
     .then(hero => {
+      const { name, description, modified, thumbnail, comics, series, stories } = hero.data.results[0]
+      const { path: urlTumbnail, extension } = thumbnail
+
       let liComics = '', liSeries = '', liStories = ''
-      hero.data.results[0].comics.items.forEach(comic => { liComics += `<li>${comic.name}</li>` })
-      hero.data.results[0].series.items.forEach(serie => { liSeries += `<li>${serie.name}</li>` })
-      hero.data.results[0].stories.items.forEach(storie => { liStories += `<li>${storie.name}</li>` })
-      superHeroModalLabel.textContent = `Información sobre ${hero.data.results[0].name}`
-      console.log(hero.data.results[0].description)
-      let superHero = `<img src="${hero.data.results[0].thumbnail.path}.${hero.data.results[0].thumbnail.extension}" width="200" class="img-fluid rounded mx-auto d-block" alt="...">
+      comics.items.forEach(comic => { liComics += `<li>${comic.name}</li>` })
+      series.items.forEach(serie => { liSeries += `<li>${serie.name}</li>` })
+      stories.items.forEach(storie => { liStories += `<li>${storie.name}</li>` })
+      superHeroModalLabel.textContent = `Información sobre ${name}`
+
+      let superHero = `<img src="${urlTumbnail}.${extension}" width="200" class="img-fluid rounded mx-auto d-block" alt="${name}">
       <div>
         <table class="table table-borderless table-hover">
           <thead>
@@ -51,15 +54,15 @@ function showSuperHero(id) {
           <tbody>
             <tr>
               <td width="20%"><strong>Nombre:</strong></td>
-              <td>${hero.data.results[0].name}</td>
+              <td>${name}</td>
             </tr>
             <tr>
               <td><strong>Descripción:</strong></td>
-              <td>${hero.data.results[0].description === '' ? 'Sin descripción' : hero.data.results[0].description}</td>
+              <td>${description === '' ? 'Sin descripción' : description}</td>
             </tr>
             <tr>
               <td><strong>Modificación:</strong></td>
-              <td>${hero.data.results[0].modified}</td>
+              <td>${modified}</td>
             </tr>
             <tr>
               <td><strong>Comics:</strong></td>
